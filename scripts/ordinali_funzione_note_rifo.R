@@ -1,3 +1,7 @@
+# Funzione per la ristrutturazione dei dati ALI (note e riferimenti fotografici)
+# prende i file "norm_" come input e restituisce file "_tidy" in output
+# Scritta da Stefano Fiori (s.fiori@unito.it)
+
 # library(dplyr)
 # library(tidyr)
 # library(stringi)
@@ -5,11 +9,6 @@
 # library(qlcData)
 # library(tibble)
 # library(purrr)
-
-# prof <- read.delim("utils\\ALIorth.txt",quote = "")
-# 
-# test <- read.delim("file_elaborati\\08\\DATI\\norm\\norm_VIII_ELAB_1446.tsv",quote = "") %>% 
-#   mutate(unicode = stri_unescape_unicode(unicode))
 
 ordinali_note <- function(test,name,type,path) {
 
@@ -21,7 +20,7 @@ ordinali_note <- function(test,name,type,path) {
       else mutate(.,rifo = stri_unescape_unicode("\\uD83C\\uDD35"))
     }
   
-  write.table(temp,file=paste0(path,"\\VIII_",name,"_tidy.tsv")
+  write.table(temp,file=paste0(path,"\\volume_",name,"_tidy.tsv")
               ,sep = "\t"
               ,na=""
               ,quote = F
