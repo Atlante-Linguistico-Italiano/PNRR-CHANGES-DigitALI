@@ -103,11 +103,11 @@ ordinali_dati <- function(test,name,path) {
       is.na(voce) == T ~ tolower(name),
       .default = map_chr(str_extract_all(voce,'\\d+'), ~paste(.x, collapse = ","))))
   
-  # write.table(temp,file=paste0(path,"\\VIII_",name,"_tidy.tsv")
-  #             ,sep = "\t"
-  #             ,na=""
-  #             ,quote = F
-  #             ,row.names = F)
+    write.table(temp,file=paste0(path,"\\volume_",name,"_tidy.tsv")
+               ,sep = "\t"
+               ,na=""
+               ,quote = F
+               ,row.names = F)
   
   #return(temp)
 
