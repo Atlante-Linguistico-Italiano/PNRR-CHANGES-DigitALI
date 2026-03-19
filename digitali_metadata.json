@@ -1,0 +1,730 @@
+{
+    "@context": [
+        "http://www.w3.org/ns/csvw",
+        {
+            "@language": "it"
+        }
+    ],
+    "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#Generic",
+	"dc:title": "DigitALI: l'Atlante Linguistico Italiano digitale",
+    "dialect": {
+        "commentPrefix": "#",
+		"delimiter": "\t"
+    },
+    "tables": [
+		{
+			"url": "volumi_dati.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "punto",
+						"required": true,
+						"dc:description": "numero del punto d'inchiesta",
+                        "datatype": {
+                            "base": "integer","format": "\\d{4}"
+						}
+					},
+					{
+						"name": "codice",
+						"required": true,
+						"dc:description": "codice alfanumerico del punto d'inchiesta",
+                        "datatype": {
+                            "base": "string","format": "[a-m]{2}d{3}"
+						}
+					},
+					{
+						"name": "alicode",
+						"required": true,
+						"dc:description": "stringa di testo in codifica ALICode",
+                        "datatype": "string"
+					},
+					{
+						"name": "normali",
+						"required": true,
+						"dc:description": "stringa di testo normalizzata",
+                        "datatype": "string"
+					},
+					{
+						"name": "risposta",
+						"required": true,
+						"dc:description": "risposta dialettale estratta in formato Unicode",
+                        "datatype": "string"
+					},
+					{
+						"name": "sigla",
+						"required": false,
+						"dc:description": "eventuale sigla identificativa dell'informatore",
+                        "datatype": "string"
+					},
+					{
+						"name": "tag",
+						"required": false,
+						"dc:description": "marca variazionale",
+                        "datatype": "string"
+					},
+					{
+						"name": "legenda",
+						"required": false,
+                        "datatype": "string"
+					},
+					{
+						"name": "simbolo",
+						"required": false,
+						"dc:description": "tipo illustrativo",
+                        "datatype": "string"
+					},
+					{
+						"name": "tag",
+						"required": false,
+						"dc:description": "marca variazionale",
+                        "datatype": "string"
+					},
+					{
+						"name": "nota",
+						"required": false,
+                        "datatype": "string"
+					},
+					{
+						"name": "rifo",
+						"required": false,
+						"dc:description": "riferimento fotografico",
+                        "datatype": "string"
+					},
+					{
+						"name": "unicode",
+						"required": true,
+						"dc:description": "stringa originale in formato Unicode",
+                        "datatype": "string"
+					},
+					{
+						"name": "html",
+						"required": true,
+						"dc:description": "stringa originale in formato HTML",
+                        "datatype": "html"
+					},
+					{
+						"name": "voce",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "volume",
+						"required": true,
+                        "datatype": "string"
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": "voce",
+						"reference": {
+							"resource": "questionario.tsv",
+							"columnReference": "voce"
+						}
+					},
+					{
+						"columnReference": ["punto","codice","sigla","voce"],
+						"reference": {
+							"resource": "informatori_voci.tsv",
+							"columnReference": ["punto","codice","sigla","voce"]
+						}
+					},
+					{
+						"columnReference": ["punto","codice","nota","voce"],
+						"reference": {
+							"resource": "volumi_note.tsv",
+							"columnReference": ["punto","codice","nota","voce"]
+						}
+					},
+					{
+						"columnReference": ["punto","codice","rifo","voce"],
+						"reference": {
+							"resource": "volumi_note.tsv",
+							"columnReference": ["punto","codice","rifo","voce"]
+						}
+					}
+				],
+				"primaryKey": ["punto","codice","voce"]
+			}
+		},
+		{
+			"url": "volumi_note.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "punto",
+						"required": true,
+						"dc:description": "numero del punto d'inchiesta",
+                        "datatype": {
+                            "base": "integer","format": "\\d{4}"
+						}
+					},
+					{
+						"name": "codice",
+						"required": true,
+						"dc:description": "codice alfanumerico del punto d'inchiesta",
+                        "datatype": {
+                            "base": "string","format": "[a-m]{2}d{3}"
+						}
+					},
+					{
+						"name": "note_alicode",
+						"required": true,
+						"dc:description": "stringa di testo in codifica ALICode",
+                        "datatype": "string"
+					},
+					{
+						"name": "note_normali",
+						"required": true,
+						"dc:description": "stringa di testo normalizzata",
+                        "datatype": "string"
+					},
+					{
+						"name": "note_unicode",
+						"required": true,
+						"dc:description": "stringa originale in formato Unicode",
+                        "datatype": "string"
+					},
+					{
+						"name": "note_html",
+						"required": true,
+						"dc:description": "stringa originale in formato HTML",
+                        "datatype": "html"
+					},
+					{
+						"name": "nota",
+						"required": false,
+                        "datatype": "string"
+					},
+					{
+						"name": "voce",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "volume",
+						"required": true,
+                        "datatype": "integer"
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": ["punto","codice","nota","voce"],
+						"reference": {
+							"resource": "volumi_dati.tsv",
+							"columnReference": ["punto","codice","nota","voce"]
+						}
+					}
+				],
+				"primaryKey": ["punto","codice","voce"]
+			}
+		},
+		{
+			"url": "volumi_rifo.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "punto",
+						"required": true,
+						"dc:description": "numero del punto d'inchiesta",
+                        "datatype": {
+                            "base": "integer","format": "\\d{4}"
+						}
+					},
+					{
+						"name": "codice",
+						"required": true,
+						"dc:description": "codice alfanumerico del punto d'inchiesta",
+                        "datatype": {
+                            "base": "string","format": "[a-m]{2}d{3}"
+						}
+					},
+					{
+						"name": "rifo_alicode",
+						"required": true,
+						"dc:description": "stringa di testo in codifica ALICode",
+                        "datatype": "string"
+					},
+					{
+						"name": "rifo_normali",
+						"required": true,
+						"dc:description": "stringa di testo normalizzata",
+                        "datatype": "string"
+					},
+					{
+						"name": "rifo_unicode",
+						"required": true,
+						"dc:description": "stringa originale in formato Unicode",
+                        "datatype": "string"
+					},
+					{
+						"name": "rifo_html",
+						"required": true,
+						"dc:description": "stringa originale in formato HTML",
+                        "datatype": "html"
+					},
+					{
+						"name": "rifo",
+						"required": false,
+                        "datatype": "string"
+					},
+					{
+						"name": "voce",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "volume",
+						"required": true,
+                        "datatype": "integer"
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": ["punto","codice","rifo","voce"],
+						"reference": {
+							"resource": "volumi_dati.tsv",
+							"columnReference": ["punto","codice","rifo","voce"]
+						}
+					}
+				],
+				"primaryKey": ["punto","codice","voce"]
+			}
+		},
+		{
+			"url": "informatori.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "inf_id",
+						"required": true,
+						"dc:description": "identificatore dell'informatore",
+                        "datatype": "string"
+					},
+					{
+						"name": "punto",
+						"required": true,
+						"dc:description": "numero del punto d'inchiesta",
+                        "datatype": {
+                            "base": "integer","format": "\\d{4}"
+						}
+					},
+					{
+						"name": "codice",
+						"required": true,
+						"dc:description": "codice alfanumerico del punto d'inchiesta",
+                        "datatype": {
+                            "base": "string","format": "[a-m]{2}d{3}"
+						}
+					},
+					{
+						"name": "localita",
+						"required": true,
+						"dc:description": "nome del punto",
+                        "datatype": "string"
+					},
+					{
+						"name": "sigla",
+						"required": false,
+						"dc:description": "eventuale sigla identificativa dell'informatore",
+                        "datatype": "string"
+					},
+					{
+						"name": "num_inf",
+						"required": true,
+                        "datatype": "integer"
+					},
+					{
+						"name": "nome_cognome",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "eta",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "genere",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "anno_nascita",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "dimora_breve",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "dimora_lunga",
+						"required": true,
+                        "datatype": "stringa"
+					},
+					{
+						"name": "dimora_padre",
+						"required": true,
+                        "datatype": "stringa"
+					},
+					{
+						"name": "dimora_madre",
+						"required": true,
+                        "datatype": "stringa"
+					},
+					{
+						"name": "professione",
+						"required": true,
+                        "datatype": "stringa"
+					},
+					{
+						"name": "grado_cultura",
+						"required": true,
+                        "datatype": "stringa"
+					},
+					{
+						"name": "note",
+						"required": true,
+                        "datatype": "stringa"
+					},
+					{
+						"name": "inchiesta",
+						"required": true,
+                        "datatype": "stringa"
+					},
+					{
+						"name": "lng",
+						"required": true,
+                        "datatype": {
+							"base": "decimal",
+							"minimum": "-180",
+							"maximum": "180"
+						}
+					},
+					{
+						"name": "lat",
+						"required": true,
+                        "datatype": {
+							"base": "decimal",
+							"minimum": "-90",
+							"maximum": "90"
+						}
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": "inf_id",
+						"reference": {
+							"resource": "informatori_voci.tsv",
+							"columnReference": "inf_id"
+						}
+					},
+					{
+						"columnReference": ["punto","codice"],
+						"reference": {
+							"resource": "punti.tsv",
+							"columnReference": ["punto","codice"]
+						}
+					}
+				],
+				"primaryKey": "inf_id"
+			}
+		},
+		{
+			"url": "informatori_voci.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "inf_id",
+						"required": true,
+						"dc:description": "identificatore dell'informatore",
+                        "datatype": "string"
+					},
+					{
+						"name": "punto",
+						"required": true,
+						"dc:description": "numero del punto d'inchiesta",
+                        "datatype": {
+                            "base": "integer","format": "\\d{4}"
+						}
+					},
+					{
+						"name": "codice",
+						"required": true,
+						"dc:description": "codice alfanumerico del punto d'inchiesta",
+                        "datatype": {
+                            "base": "string","format": "[a-m]{2}d{3}"
+						}
+					},
+					{
+						"name": "sigla",
+						"required": false,
+						"dc:description": "eventuale sigla identificativa dell'informatore",
+                        "datatype": "string"
+					},
+					{
+						"name": "voci",
+						"required": true,
+						"separator": "|",
+                        "datatype": "string"
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": "inf_id",
+						"reference": {
+							"resource": "informatori.tsv",
+							"columnReference": "inf_id"
+						}
+					},
+					{
+						"columnReference": ["punto","codice","sigla"],
+						"reference": {
+							"resource": "volumi_dati.tsv",
+							"columnReference": ["punto","codice","sigla"]
+						}
+					}
+				]
+			}
+		},
+		{
+			"url": "questionario.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "voce",
+						"required": true,
+						"dc:description": "identificativo originale delle voci",
+                        "datatype": {
+                            "base": "string","format": "\\d{1,4}[abv]?z{,3}"
+						}
+					},
+					{
+						"name": "voce_id",
+						"required": true,
+						"dc:description": "identificativo numerico progressivo delle voci",
+                        "datatype": {
+                            "base": "integer","format": "\\d{4}"
+						}
+					},
+					{
+						"name": "testo_domanda",
+						"required": true,
+						"dc:description": "testo della domanda",
+                        "datatype": "string"
+					},
+					{
+						"name": "titolo_carta",
+						"required": false,
+						"dc:description": "titolo della carta in cui la voce compare",
+                        "datatype": "string"
+					},
+					{
+						"name": "carta",
+						"required": true,
+						"dc:description": "numero progressivo delle carte",
+                        "datatype": "integer"
+					},
+					{
+						"name": "volume",
+						"required": true,
+						"dc:description": "numero del volume",
+                        "datatype": "integer"
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": "voce",
+						"reference": {
+							"resource": "volumi_dati.tsv",
+							"columnReference": "voce"
+						}
+					}
+				],
+				"primaryKey": "voci_id"
+			}
+		},
+		{
+			"url": "punti.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "punto",
+						"required": true,
+						"dc:description": "numero del punto d'inchiesta",
+                        "datatype": {
+                            "base": "integer","format": "\\d{1,4}"
+						}
+					},
+					{
+						"name": "codice",
+						"required": true,
+						"dc:description": "codice alfanumerico del punto d'inchiesta",
+                        "datatype": {
+                            "base": "string","format": "[a-m]{2}d{3}"
+						}
+					},
+					{
+						"name": "localita",
+						"required": true,
+						"dc:description": "nome della località visitata",
+                        "datatype": "string"
+					},
+					{
+						"name": "comune",
+						"required": true,
+						"dc:description": "nome del comune che include la località visitata",
+                        "datatype": "string"
+					},
+					{
+						"name": "provincia",
+						"required": true,
+                        "datatype": {
+                            "base": "string","format": "[A-Z]{2}"
+						}
+					},
+					{
+						"name": "regione",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "inchiesta",
+						"required": true,
+                        "datatype": {
+                            "base": "string","format": "\\d{5}"
+						}
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": "inchiesta",
+						"reference": {
+							"resource": "inchieste.tsv",
+							"columnReference": "inchiesta"
+						}
+					}
+				],
+				"primaryKey": "voci_id"
+			}
+		},
+		{
+			"url": "inchieste.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "inchiesta_id",
+						"required": true,
+                        "datatype": {
+                            "base": "string","format": "\\d{5}-\\d{2}"
+						}
+					},
+					{
+						"name": "punto",
+						"required": true,
+						"dc:description": "numero del punto d'inchiesta",
+                        "datatype": {
+                            "base": "integer","format": "\\d{1,4}"
+						}
+					},
+					{
+						"name": "codice",
+						"required": true,
+						"dc:description": "codice alfanumerico del punto d'inchiesta",
+                        "datatype": {
+                            "base": "string","format": "[a-m]{2}d{3}"
+						}
+					},
+					{
+						"name": "inchiesta",
+						"required": true,
+                        "datatype": {
+                            "base": "string","format": "\\d{5}"
+						}
+					},
+					{
+						"name": "anno",
+						"required": true,
+                        "datatype": "integer"
+					},
+					{
+						"name": "rilievo",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "data_inchiesta",
+						"required": true,
+                        "datatype": "datetime"
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": ["punto","codice"],
+						"reference": {
+							"resource": "punti.tsv",
+							"columnReference": ["punto","codice"]
+						}
+					}
+				],
+				"primaryKey": "inchiesta_id"
+			}
+		},
+		{
+			"url": "fotografie.tsv",
+			"tableSchema": {
+				"columns": [
+					{
+						"name": "fotografia_id",
+						"required": true,
+                        "datatype": "integer"
+					},
+					{
+						"name": "punto",
+						"required": true,
+						"dc:description": "numero del punto d'inchiesta",
+                        "datatype": {
+                            "base": "integer","format": "\\d{1,4}"
+						}
+					},
+					{
+						"name": "codice",
+						"required": true,
+						"dc:description": "codice alfanumerico del punto d'inchiesta",
+                        "datatype": {
+                            "base": "string","format": "[a-m]{2}d{3}"
+						}
+					},
+					{
+						"name": "localita",
+						"required": true,
+                        "datatype": "string"
+					},
+					{
+						"name": "link_sff",
+						"required": true,
+						"dc:description": "link al sito Teche Friulane",
+                        "datatype": "string"
+					},
+					{
+						"name": "titolo_sff",
+						"required": true,
+						"dc:description": "titolo attribuito alla fotografia",
+                        "datatype": "string"
+					}
+				],
+				"foreignKeys": [
+					{
+						"columnReference": ["punto","codice"],
+						"reference": {
+							"resource": "punti.tsv",
+							"columnReference": ["punto","codice"]
+						}
+					}
+				],
+				"primaryKey": "fotografia_id"
+			}
+		}
+	]
+}
